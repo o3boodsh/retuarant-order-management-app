@@ -1,15 +1,16 @@
+import { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 
 
 const Header = () => {
     return (
-        <>
+        <Fragment>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="#">
+                    <NavLink className="navbar-brand" to="/admin/dashboard">
                         <i className="fas fa-utensils me-2"></i>
                         Restaurant Management System
-                    </a>
+                    </NavLink>
                     <div className="navbar-nav ms-auto">
                         <div className="d-flex align-items-center">
                             <div className="dropdown me-3">
@@ -24,6 +25,7 @@ const Header = () => {
                                     <a className="dropdown-item" href="#">Inventory low alert</a>
                                 </div>
                             </div>
+
                             <div className="dropdown">
                                 <a href="#" className="text-white dropdown-toggle text-decoration-none"
                                     data-bs-toggle="dropdown">
@@ -39,6 +41,7 @@ const Header = () => {
                                         Logout</NavLink>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -58,7 +61,7 @@ const Header = () => {
                     </button>
                 </div>
             </div>
-        </>
+        </Fragment>
     );
 }
 

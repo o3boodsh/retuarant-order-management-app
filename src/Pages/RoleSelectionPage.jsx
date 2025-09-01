@@ -30,7 +30,7 @@ const RoleSelectionPage = () => {
                                         color="primary"
                                         title="Customer"
                                         description="Browse menu, place orders, and track your order status"
-                                        type="customer"
+                                        type="customer-login"
                                     />
                                 </div>
                             </div>

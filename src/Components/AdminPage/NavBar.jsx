@@ -1,7 +1,10 @@
 import { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 
-const SlideBar = () => {
+const NavBar = () => {
+    function toggleSidebar() {
+        document.body.classList.toggle('collapsed');
+    }
     return (
         <Fragment>
             <div className="sidebar">
@@ -30,13 +33,13 @@ const SlideBar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="path1" className={`${(event) => event.isActive ? "active" : ""}`} end>
+                        <NavLink to="/admin/reports" className={`${(event) => event.isActive ? "active" : ""}`} end>
                             <i className="fas fa-file-alt"></i>
                             <span className="menu-text">Reports</span>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="path2" className={`${(event) => event.isActive ? "active" : ""}`} end >
+                        <NavLink to="/admin/staff-management" className={`${(event) => event.isActive ? "active" : ""}`} end >
                             <i className="fas fa-users"></i>
                             <span className="menu-text">Staff Management</span>
                         </NavLink>
@@ -56,10 +59,10 @@ const SlideBar = () => {
                 </ul>
             </div>
 
-            <button className="toggle-sidebar" >
+            <button className="toggle-sidebar" onClick={toggleSidebar}>
                 <i className="fas fa-bars"></i>
             </button>
         </Fragment>
     );
 }
-export default SlideBar;
+export default NavBar;

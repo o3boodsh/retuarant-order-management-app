@@ -2,14 +2,15 @@
     /* --primary: #4e73df;
     --secondary: #6f42c1; */
     --primary: #2c3e50;
-    --secondary: #3498db;
+    --secondary: #e74c3c;
     --success: #27ae60;
     --warning: #f39c12;
-    --danger: #e74c3c;
+    --danger: #3498db;
     --light: #ecf0f1;
     --dark: #2c3e50;
     --dark-bg: #343a40;
     --light-bg: #f8f9fa;
+    --light-gray: #e9ecef;
     --accent: #3498db;
     --info: #17a2b8;
     --card-bg: #ffffff;
@@ -20,6 +21,8 @@
     --about-color: #1abc9c;
     --feedback-color: #f1c40f;
     --logout-color: #e74c3c;
+    --facebook: #3b5998;
+    --instagram: #e4405f;
 }
 
 * {
@@ -300,20 +303,6 @@ footer {
 
 /* *********************************************** */
 
-/* :root {
-    --primary: #2c3e50;
-    --secondary: #3498db;
-    --success: #27ae60;
-    --warning: #f39c12;
-    --danger: #e74c3c;
-    --light: #ecf0f1;
-    --dark: #2c3e50;
-}
-
-body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-} */
 
 .navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -377,6 +366,11 @@ body {
 }
 
 .table-number {
+    /* width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px; */
     font-weight: 700;
     font-size: 1.2rem;
 }
@@ -436,17 +430,7 @@ body {
 
 /* **************************************** */
 
-:root {
-    --primary: #2c3e50;
-    --secondary: #e74c3c;
-    --accent: #3498db;
-    --light-bg: #f8f9fa;
-    --dark-bg: #343a40;
-    --success: #27ae60;
-    --warning: #f39c12;
-    --info: #17a2b8;
-    --light-gray: #e9ecef;
-}
+
 
 body {
     background-color: #f5f7f9;
@@ -858,11 +842,11 @@ body {
 }
 
 /* **************************""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" */
-/* Chef */
+/* Customer */
 
 .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 30px auto;
     padding-top: 70px;
 }
 
@@ -884,7 +868,7 @@ body {
 
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 25px;
     margin-top: 20px;
 }
@@ -909,7 +893,7 @@ body {
 
 .card-image {
     width: 100%;
-    height: 200px;
+    height: 250px;
     overflow: hidden;
     position: relative;
 }
@@ -973,11 +957,12 @@ body {
     animation: fadeIn 0.3s ease;
 }
 
-.card-footer {
+.card-footer_1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 15px;
+
 }
 
 .price {
@@ -1494,7 +1479,8 @@ body {
     opacity: 1;
     right: 0;
 }
-.button:hover{
+
+.button:hover {
     background-color: var(--secondary);
 
 }
