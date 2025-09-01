@@ -2,14 +2,28 @@ import { Link, useNavigate } from "react-router-dom";
 import "../Resources/css/staff-login.css";
 
 
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 
 const StaffLoginPage = () => {
     let navigate = useNavigate();
 
+    let userRef = useRef();;
+
     let onSubmitHandler = (event) => {
         event.preventDefault()
-        navigate("/admin", { replace: true });
+        if (userRef.current.value === 'a') {
+            navigate("/admin", { replace: true });
+        }
+        else if (userRef.current.value === 'ch') {
+            navigate("/cheff", { replace: true });
+        }
+        else if (userRef.current.value === 'w') {
+            navigate("/waiter", { replace: true });
+        }
+        else {
+            alert('Error input!!');
+        }
+
     }
     return (
         <Fragment>
@@ -30,7 +44,7 @@ const StaffLoginPage = () => {
                                 <div className="input-group">
                                     <span className="input-group-text"><i className="fas fa-user"></i></span>
                                     <input type="text" id="adminUsername" className="form-control_1" placeholder="Enter your username"
-                                        required />
+                                        required ref={userRef} />
                                 </div>
                             </div>
 

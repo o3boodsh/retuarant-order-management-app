@@ -9,6 +9,8 @@ import Orders from "../Components/AdminPage/Orders";
 import ReportsPage from "../Components/AdminPage/ReportsPage";
 import StaffManagementPage from "../Components/AdminPage/StaffManagementPage";
 import CustomerLogin from "../Pages/CustomerLogin";
+import CheffPage from "../Pages/CheffPage";
+import WaiterPage from "../Pages/WaiterPage";
 
 
 const AppRoutes = () => {
@@ -18,6 +20,8 @@ const AppRoutes = () => {
             <Route path="/role-selecttion" element={<RoleSelectionPage />} />
             <Route path="/customer" element={<CustomerPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/cheff" element={<CheffPage />} />
+            <Route path="/waiter" element={<WaiterPage />} />
             <Route path="/staff-login" element={<StaffLoginPage />} />
             <Route path="/customer-login" element={<CustomerLogin />} />
 
