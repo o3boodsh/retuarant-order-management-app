@@ -5,18 +5,19 @@ import "../Resources/css/style.css";
 import RestuarantContext from "../Context/restuarant-context";
 
 const RoleSelectionPage = () => {
-    let [menuItem, setMenuItem] = useState([]);
+    // let [menuItem, setMenuItem] = useState([]);
 
-    let addNewItemMenu = (newItem) => {
-        setMenuItem((prevItems) => {
-            return [newItem, ...prevItems];
-        });
-    }
+    // let addNewItemMenu = (newItem) => {
+    //     setMenuItem((prevItems) => {
+    //         return [newItem, ...prevItems];
+    //     });
+    // }
     return (
-        <RestuarantContext.Provider value={{
-            menuItem: menuItem,
-            addNewItemMenu: addNewItemMenu,
-        }}>
+        <>
+        {/* // <RestuarantContext.Provider value={{ */}
+        {/* //     menuItem: menuItem,
+        //     addNewItemMenu: addNewItemMenu,
+        // }}> */}
             <div id="role-page" className="page active-page">
                 <Header />
                 <div className="container flex-grow-1">
@@ -48,7 +49,8 @@ const RoleSelectionPage = () => {
                     </div>
                 </div>
             </div>
-        </RestuarantContext.Provider>
+            </>
+        // </RestuarantContext.Provider>
     );
 }
 

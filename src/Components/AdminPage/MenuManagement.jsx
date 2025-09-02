@@ -1,11 +1,14 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import '../../Resources/css/style.css';
 import TextAreaForm from "./adminComponents/TextAreaForm";
 import InputForm from "./adminComponents/InputForm";
 import MenuManagementController from "../../Controller/MenuManagementController";
+import RestuarantContext from "../../Context/restuarant-context";
+import Item from "../Items/Item";
 
 const MenuManagement = () => {
     let menuManagementController = new MenuManagementController();
+    let restuarantContext = useContext(RestuarantContext);
 
     return (
         <Fragment >
@@ -57,7 +60,29 @@ const MenuManagement = () => {
                 </div>
                 <div className="card-body">
                     <div className="row" id="menuItems">
-                        {/* Cards of items */}
+                        {restuarantContext.menuItem.map((element) =>
+                        <Item
+                        key={element.id}
+                        id={element.id}
+                        name={element.name}
+                        image={element.image}
+                        price={element.price}
+                        category={element.category}
+                        description={element.description}
+
+                        
+                        />
+                            // <TaskDetails
+                            //     key={element.id}
+                            //     id={element.id}
+                            //     title={element.title}
+                            //     startDate={element.startDate}
+                            //     endDate={element.endDate}
+                            //     description={element.description}
+                            //     status="Waiting"
+
+                            // />
+                        )}
                     </div>
                 </div>
             </div>

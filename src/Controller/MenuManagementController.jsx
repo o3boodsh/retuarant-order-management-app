@@ -19,9 +19,10 @@ class MenuManagementController {
 
     addNewItem = () => {
         if (this.checkForm()) {
-            const newItem = this.createrNewItem;
-            this.itemContext.addNewItemMenu(newItem);
-            console.log(newItem);
+            const newItemObject = this.newItem;
+            this.itemContext.addNewItemMenu(newItemObject);
+            console.log(newItemObject);
+            // console.log(`The new item : ${this.newItem}`)
             console.log(this.itemContext.menuItem);
             this.clear();
         }
@@ -56,8 +57,15 @@ class MenuManagementController {
         this.imageRef.current.value = "";
 
     }
-    get createrNewItem() {
-        return new ItemMenu(Math.random(), this.nameRef.current.value, this.priceRef.current.value, this.descriptionRef.current.value, this.categoryRef.current.value, this.statusRef.current.value, this.imageRef.current.files[0]);
+    get newItem() {
+        return new ItemMenu(
+        Math.random(),
+        this.nameRef.current.value, 
+        this.priceRef.current.value, 
+        this.descriptionRef.current.value, 
+        this.categoryRef.current.value, 
+        this.statusRef.current.value, 
+        this.imageRef.current.files[0]);
     }
 }
 
