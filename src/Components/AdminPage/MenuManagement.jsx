@@ -69,19 +69,7 @@ const MenuManagement = () => {
                         price={element.price}
                         category={element.category}
                         description={element.description}
-
-                        
                         />
-                            // <TaskDetails
-                            //     key={element.id}
-                            //     id={element.id}
-                            //     title={element.title}
-                            //     startDate={element.startDate}
-                            //     endDate={element.endDate}
-                            //     description={element.description}
-                            //     status="Waiting"
-
-                            // />
                         )}
                     </div>
                 </div>
