@@ -6,9 +6,7 @@ import { Fragment, useRef } from "react";
 
 const StaffLoginPage = () => {
     let navigate = useNavigate();
-
-    let userRef = useRef();;
-
+    let userRef = useRef();
     let onSubmitHandler = (event) => {
         event.preventDefault()
         if (userRef.current.value === 'a') {

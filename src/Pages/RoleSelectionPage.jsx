@@ -1,14 +1,24 @@
-import { Fragment } from "react";
+import { useState } from "react";
 import RoleCard from "../Components/RoleSelection/RoleCard";
 import Header from "../Components/RoleSelection/Header";
 import "../Resources/css/style.css";
+import RestuarantContext from "../Context/restuarant-context";
 
 const RoleSelectionPage = () => {
+    let [menuItem, setMenuItem] = useState([]);
+
+    let addNewItemMenu = (newItem) => {
+        setMenuItem((prevItems) => {
+            return [newItem, ...prevItems];
+        });
+    }
     return (
-        <Fragment>
+        <RestuarantContext.Provider value={{
+            menuItem: menuItem,
+            addNewItemMenu: addNewItemMenu,
+        }}>
             <div id="role-page" className="page active-page">
                 <Header />
-
                 <div className="container flex-grow-1">
                     <div className="row justify-content-center">
                         <div className="col-md-10">
@@ -38,7 +48,7 @@ const RoleSelectionPage = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </RestuarantContext.Provider>
     );
 }
 

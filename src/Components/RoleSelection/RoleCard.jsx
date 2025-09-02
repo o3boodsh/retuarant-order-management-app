@@ -8,7 +8,6 @@ const RoleCard = (props) => {
     }
 
     return (
-
         <Fragment>
             <div className="col-md-6 mb-4" >
                 <div className="card role-card text-center p-4" >

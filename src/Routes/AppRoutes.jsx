@@ -19,7 +19,7 @@ const AppRoutes = () => {
             <Route path="/" element={<Navigate to="/role-selecttion" />} />
             <Route path="/role-selecttion" element={<RoleSelectionPage />} />
             <Route path="/customer" element={<CustomerPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
             <Route path="/cheff" element={<CheffPage />} />
             <Route path="/waiter" element={<WaiterPage />} />
             <Route path="/staff-login" element={<StaffLoginPage />} />
