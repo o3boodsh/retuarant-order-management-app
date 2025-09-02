@@ -1,8 +1,9 @@
+import { Fragment } from "react";
 
 const Item = (props) => {
 
     return (
-        <>
+        <Fragment>
             <div className="col-md-4">
                 <div className="card item card">
                     <img src={props.image} className="card-img-top" alt="..." />
@@ -11,7 +12,7 @@ const Item = (props) => {
                         <h5 className="card-title">{props.name}</h5>
                         <p className="card-text">{props.description}</p>
                         <h6 className="card-subtitle mb-2 text-muted">
-                            <span></span>{"$"+props.price}
+                            <span></span>{"$" + props.price}
                         </h6>
                         <span>
                             {props.category}
@@ -25,7 +26,7 @@ const Item = (props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </Fragment>
 
 
     );

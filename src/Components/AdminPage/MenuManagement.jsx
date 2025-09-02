@@ -4,7 +4,7 @@ import TextAreaForm from "./adminComponents/TextAreaForm";
 import InputForm from "./adminComponents/InputForm";
 import MenuManagementController from "../../Controller/MenuManagementController";
 import RestuarantContext from "../../Context/restuarant-context";
-import Item from "../Items/Item";
+import Item from "./adminComponents/Item";
 
 const MenuManagement = () => {
     let menuManagementController = new MenuManagementController();
@@ -61,15 +61,15 @@ const MenuManagement = () => {
                 <div className="card-body">
                     <div className="row" id="menuItems">
                         {restuarantContext.menuItem.map((element) =>
-                        <Item
-                        key={element.id}
-                        id={element.id}
-                        name={element.name}
-                        image={element.image}
-                        price={element.price}
-                        category={element.category}
-                        description={element.description}
-                        />
+                            <Item
+                                key={element.id}
+                                id={element.id}
+                                name={element.name}
+                                image={element.image ? URL.createObjectURL(element.image) : console.log('error image')}
+                                price={element.price}
+                                category={element.category}
+                                description={element.description}
+                            />
                         )}
                     </div>
                 </div>

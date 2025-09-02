@@ -6,27 +6,27 @@ import RestuarantContext from "../Context/restuarant-context";
 import { useState } from "react";
 
 const AdminPage = () => {
-        let [menuItem, setMenuItem] = useState([]);
-        let[staff,setStaff]=useState([]);
-    
-        let addNewItemMenu = (newItem) => {
-            setMenuItem((prevItems) => {
-                return [newItem, ...prevItems];
-            });
-        }
-        let addNewStaff = (newStaff) => {
-            setStaff((prevStaff) => {
-                return [newStaff, ...prevStaff];
-            });
-        }
+    let [menuItem, setMenuItem] = useState([]);
+    let addNewItemMenu = (newItem) => {
+        setMenuItem((prevItems) => {
+            return [newItem, ...prevItems];
+        });
+    }
+
+    let [staffs, setStaff] = useState([]);
+    let addNewStaff = (newStaff) => {
+        setStaff((prevStaff) => {
+            return [newStaff, ...prevStaff];
+        });
+    }
     return (
 
-          <RestuarantContext.Provider value={{
-            menuItem:menuItem,
-            addNewItemMenu:addNewItemMenu,
-            staff:staff,
-            addNewStaff:addNewStaff
-            }}>
+        <RestuarantContext.Provider value={{
+            menuItem: menuItem,
+            addNewItemMenu: addNewItemMenu,
+            staffs: staffs,
+            addNewStaff: addNewStaff
+        }}>
             <div id="admin-page" className="page">
                 <NavBar />
                 <div className="main-content">
@@ -35,8 +35,8 @@ const AdminPage = () => {
                     <Outlet />
                 </div>
             </div>
-            </RestuarantContext.Provider> 
-        
+        </RestuarantContext.Provider>
+
     );
 }
 

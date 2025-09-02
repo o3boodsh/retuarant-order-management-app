@@ -1,13 +1,14 @@
 import { useContext, useRef } from "react";
 import Swal from "sweetalert2";
 import RestuarantContext from "../Context/restuarant-context";
-import Staff from "../Components/Staff/Staff";
+import Staff from "../Model/Staff";
 
 class StaffManagementController {
     staffIdRef = useRef();
     staffNameRef = useRef();
     staffCategoryRef = useRef();
-    
+    staffPasswordRef = useRef();
+
     itemContext = useContext(RestuarantContext);
 
     onSubmitHandler = (event) => {
@@ -21,13 +22,13 @@ class StaffManagementController {
             this.itemContext.addNewStaff(newStaffObject);
             console.log(newStaffObject);
             // console.log(`The new item : ${this.newItem}`)
-            console.log(this.itemContext.menuItem);
+            console.log(this.itemContext.staffs);
             this.clear();
         }
     }
 
     checkForm = () => {
-        if (this.staffIdRef.current.value !== "" && this.staffNameRef.current.value !== "" && this.staffCategoryRef.current.value !== "") {
+        if (this.staffIdRef.current.value !== "" && this.staffNameRef.current.value !== "" && this.staffPasswordRef.current.value !== "" && this.staffCategoryRef.current.value !== "") {
             this.showAlert("successfully!", "Staff added successfully", "success");
             return true;
         }
@@ -49,15 +50,17 @@ class StaffManagementController {
     clear = () => {
         this.staffIdRef.current.value = "";
         this.staffNameRef.current.value = "";
+        this.staffPasswordRef.current.value = "";
         this.staffCategoryRef.current.value = "";
 
     }
-    get newItem() {
+    get newStaff() {
         return new Staff(
-        this.staffIdRef.current.value,
-        this.staffNameRef.current.value, 
-        this.staffCategoryRef.current.value, 
-    );
+            this.staffIdRef.current.value,
+            this.staffNameRef.current.value,
+            this.staffPasswordRef.current.value,
+            this.staffCategoryRef.current.value,
+        );
     }
 }
 

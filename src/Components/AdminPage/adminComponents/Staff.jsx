@@ -1,8 +1,9 @@
+import { Fragment } from "react";
 
 const Staff = (props) => {
 
     return (
-        <>
+        <Fragment>
             <div className="col-md-4">
                 <div className="card item card">
                     <div className="card-body">
@@ -20,9 +21,7 @@ const Staff = (props) => {
                     </div>
                 </div>
             </div>
-        </>
-
-
+        </Fragment>
     );
 }
 export default Staff

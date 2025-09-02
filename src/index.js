@@ -5,12 +5,6 @@ import AppRoutes from './Routes/AppRoutes';
 import '../src/Resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
-
-
-
-
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>

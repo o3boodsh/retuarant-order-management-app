@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import RestuarantContext from "../../Context/restuarant-context";
-import Staff from "../Staff/Staff";
 import StaffManagementController from "../../Controller/StaffManagementController";
+import Staff from "./adminComponents/Staff";
 
 const StaffManagementPage = () => {
     let staffManagementController = new StaffManagementController();
@@ -15,7 +15,6 @@ const StaffManagementPage = () => {
                     <div className="form-outline mb-4">
                         <label className="form-label">Staff Category</label>
                         <select id="input-tags" ref={staffManagementController.staffCategoryRef}
-                            // ref={taskController.categoryRef} 
                             className="form-control">
                             <option value="1">Cheff</option>
                             <option value="2" >Waiter</option>
@@ -25,7 +24,7 @@ const StaffManagementPage = () => {
                         <div className="form-floating">
                             <input type="text" className="form-control" id="staffName" placeholder="Chef Name"
                                 ref={staffManagementController.staffNameRef}
-                                required />
+                            />
 
                             <label htmlFor="staffName">Staf Name</label>
                         </div>
@@ -36,14 +35,14 @@ const StaffManagementPage = () => {
                             <input type="text"
                                 className="form-control"
                                 id="staffId" placeholder="Chef ID"
-                                required ref={staffManagementController.staffIdRef} />
+                                ref={staffManagementController.staffIdRef} />
                             <label htmlFor="staffId">Staff ID</label>
                         </div>
                     </div>
                     <div className="col-md-4">
                         <div className="form-floating">
                             <input type="password" className="form-control" id="staffPassword"
-                                placeholder="Password" required />
+                                placeholder="Password" ref={staffManagementController.staffPasswordRef} />
                             <label htmlFor="staffPassword">Password</label>
                         </div>
                     </div>
@@ -58,7 +57,7 @@ const StaffManagementPage = () => {
                 <ul id="staffList" className="list-group"></ul>
             </div>
 
-            {restuarantContext.staff.map((element) =>
+            {restuarantContext.staffs.map((element) =>
                 <Staff
                     key={element.id}
                     id={element.id}
