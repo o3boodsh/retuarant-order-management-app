@@ -1,43 +1,23 @@
-import { useContext, useRef } from "react";
+import { useRef, useContext, useCallback } from "react";
 import Swal from "sweetalert2";
 import ItemMenu from "../Model/ItemMenu";
 import RestuarantContext from "../Context/restuarant-context";
 
-class MenuManagementController {
-    nameRef = useRef();
-    priceRef = useRef();
-    descriptionRef = useRef();
-    categoryRef = useRef();
-    statusRef = useRef();
-    imageRef = useRef();
-    itemContext = useContext(RestuarantContext);
+const MenuManagementController = () => {
+    const nameRef = useRef();
+    const priceRef = useRef();
+    const descriptionRef = useRef();
+    const categoryRef = useRef();
+    const statusRef = useRef();
+    const imageRef = useRef();
+    const itemContext = useContext(RestuarantContext);
 
-    onSubmitHandler = (event) => {
-        event.preventDefault();
-        this.addNewItem();
-    }
+    // رابط قاعدة البيانات
+    const FIREBASE_DB_URL = "https://restuarant-order-management-default-rtdb.firebaseio.com";
 
-    addNewItem = () => {
-        if (this.checkForm()) {
-            const newItemObject = this.newItem;
-            this.itemContext.addNewItemMenu(newItemObject);
-            console.log(newItemObject);
-            console.log(this.itemContext.menuItem);
-            this.clear();
-        }
-    }
-
-    checkForm = () => {
-        if (this.nameRef.current.value !== "" && this.priceRef.current.value !== "" && this.descriptionRef.current.value !== "" && this.categoryRef.current.value !== "" && this.statusRef.current.value !== "" && this.imageRef.current.value !== "") {
-            this.showAlert("successfully!", "Item added successfully", "success");
-            return true;
-        }
-        this.showAlert("Data is missing!", "The entered data is incomplete.", "error");
-    }
-
-    showAlert = (titel, text, icon) => {
+    const showAlert = useCallback((title, text, icon) => {
         Swal.fire({
-            title: titel,
+            title: title,
             text: text,
             icon: icon,
             showCancelButton: false,
@@ -45,28 +25,141 @@ class MenuManagementController {
             showConfirmButton: false,
             timer: 1500,
         });
-    };
+    }, []);
 
-    clear = () => {
-        this.nameRef.current.value = "";
-        this.priceRef.current.value = "";
-        this.descriptionRef.current.value = "";
-        this.categoryRef.current.value = "";
-        this.statusRef.current.value = "";
-        this.imageRef.current.value = "";
+    const checkForm = useCallback(() => {
+        if (nameRef.current?.value &&
+            priceRef.current?.value &&
+            descriptionRef.current?.value &&
+            categoryRef.current?.value &&
+            statusRef.current?.value &&
+            imageRef.current?.value) {
+            showAlert("Successfully!", "Item added successfully", "success");
+            return true;
+        }
+        showAlert("Data is missing!", "The entered data is incomplete.", "error");
+        return false;
+    }, [showAlert]);
 
-    }
-    get newItem() {
+    const uploadImageToFirebaseStorage = useCallback(async (imageFile) => {
+        // محاكاة رفع الصورة (استبدل هذا بالكود الحقيقي)
+        return "https://ichef.bbci.co.uk/ace/ws/800/cpsprodpb/d1a7/live/173b2380-47d2-11ee-9b58-cb80889117a8.jpg.webp";
+    }, []);
+
+    const uploadItemToFirebase = useCallback(async (item) => {
+        try {
+            let imageUrl = item.image;
+            if (item.image instanceof File) {
+                imageUrl = await uploadImageToFirebaseStorage(item.image);
+            }
+
+            const response = await fetch(`${FIREBASE_DB_URL}/menuItems.json`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    description: item.description,
+                    category: item.category,
+                    status: item.status,
+                    image: imageUrl
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to upload data to Firebase');
+            }
+
+            const data = await response.json();
+            console.log('Data uploaded successfully:', data);
+            showAlert("Success!", "Data uploaded to Firebase successfully", "success");
+            return true;
+
+        } catch (error) {
+            console.error('Upload error:', error);
+            showAlert("Error!", "Failed to upload data to Firebase", "error");
+            return false;
+        }
+    }, [FIREBASE_DB_URL, showAlert, uploadImageToFirebaseStorage]);
+
+    const fetchItemsFromFirebase = useCallback(async () => {
+        try {
+            const response = await fetch(`${FIREBASE_DB_URL}/menuItems.json`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch data from Firebase');
+            }
+
+            const data = await response.json();
+            const itemsArray = [];
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    itemsArray.push({
+                        firebaseId: key,
+                        ...data[key],
+                    });
+                }
+            }
+
+            console.log('Data fetched successfully:', itemsArray);
+            return itemsArray;
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+            showAlert("Error!", "Failed to fetch data from Firebase", "error");
+            return [];
+        }
+    }, [FIREBASE_DB_URL, showAlert]);
+
+    const clearForm = useCallback(() => {
+        if (nameRef.current) nameRef.current.value = "";
+        if (priceRef.current) priceRef.current.value = "";
+        if (descriptionRef.current) descriptionRef.current.value = "";
+        if (categoryRef.current) categoryRef.current.value = "";
+        if (statusRef.current) statusRef.current.value = "available";
+        if (imageRef.current) imageRef.current.value = "";
+    }, []);
+
+    const getNewItem = useCallback(() => {
         return new ItemMenu(
             Math.random(),
-            this.nameRef.current.value,
-            this.priceRef.current.value,
-            this.descriptionRef.current.value,
-            this.categoryRef.current.value,
-            this.statusRef.current.value,
-            this.imageRef.current.files[0]
-            );
-    }
-}
+            nameRef.current?.value || "",
+            priceRef.current?.value || "",
+            descriptionRef.current?.value || "",
+            categoryRef.current?.value || "",
+            statusRef.current?.value || "available",
+            imageRef.current?.files?.[0] || null
+        );
+    }, []);
+
+    const onSubmitHandler = useCallback(async (event, onItemAdded) => {
+        event.preventDefault();
+
+        if (checkForm()) {
+            const newItemObject = getNewItem();
+            itemContext.addNewItemMenu(newItemObject);
+            clearForm();
+            // رفع البيانات إلى Firebase
+            const success = await uploadItemToFirebase(newItemObject);
+            if (success && onItemAdded) {
+                onItemAdded(); // استدعاء callback التحديث
+            }
+        }
+    }, [checkForm, getNewItem, itemContext, uploadItemToFirebase, clearForm]);
+
+    return {
+        nameRef,
+        priceRef,
+        descriptionRef,
+        categoryRef,
+        statusRef,
+        imageRef,
+        onSubmitHandler,
+        fetchItemsFromFirebase,
+    };
+};
 
 export default MenuManagementController;
