@@ -9,20 +9,86 @@ class StaffManagementController {
     staffCategoryRef = useRef();
     staffPasswordRef = useRef();
 
-    itemContext = useContext(RestuarantContext);
+    staffContext = useContext(RestuarantContext);
+    FIREBASE_DB_URL = "https://restuarant-order-management-default-rtdb.firebaseio.com";
 
-    onSubmitHandler = (event) => {
-        event.preventDefault();
-        this.addNewStaff();
+onSubmitHandler = (event) => {
+    event.preventDefault();
+    if (this.checkForm()) {
+        const newStaffObject = this.newStaff;  // ✅ استدعاء صحيح
+        this.clear();
+        this.saveStaffOnFirebase(newStaffObject);
+        this.fetchStaffFromFirebase();
     }
+}
+
+    
+    saveStaffOnFirebase = (newStaff) => {
+        fetch(`${this.FIREBASE_DB_URL}/staffs.json`,
+            {
+                method: "POST",
+                body: JSON.stringify(newStaff),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        ).then((response) => {
+            return response.json();
+        }).then((result) => {
+            console.log(result);
+            // newItem.id = result["name"];
+            newStaff.id = result.name;
+            this.staffContext.addNewStaff(newStaff);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+        fetchStaffFromFirebase = () => {
+        fetch(`${this.FIREBASE_DB_URL}/staffs.json`,
+            {
+                method: "GET",
+            }
+        ).then((response) => {
+            return response.json();
+        }).then((result) => {
+            console.log(result);
+            let fbStaffs = [];
+            for (let key in result) {
+                let staff = new Staff(
+                    result[key].id,
+                    result[key].name,
+                    result[key].password,
+                    result[key].category,
+                );
+                staff.id = key;
+                fbStaffs.unshift(staff);
+            }
+            this.staffContext.setStaffFromFB(fbStaffs);
+        }).catch((error) => {
+            console.log(error)
+        }
+        );
+    }
+        returnStsff = async () => {
+        this.fetchStaffFromFirebase();
+        return this.staffContext.staffs;
+    }
+
+
+deleteStaffFromFirebase = (id) => {
+
+    // TO BE CONTENUED .....
+
+        }
+
 
     addNewStaff = () => {
         if (this.checkForm()) {
             const newStaffObject = this.newStaff;
-            this.itemContext.addNewStaff(newStaffObject);
+            this.staffContext.addNewStaff(newStaffObject);
             console.log(newStaffObject);
             // console.log(`The new item : ${this.newItem}`)
-            console.log(this.itemContext.staffs);
+            console.log(this.staffContext.staffs);
             this.clear();
         }
     }

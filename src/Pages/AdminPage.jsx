@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const AdminPage = () => {
     let [menuItem, setMenuItem] = useState([]);
+  const [staffs, setStaffs] = useState([]);
     let addNewItemMenu = (newItem) => {
         setMenuItem((prevItems) => {
             return [newItem, ...prevItems];
@@ -17,12 +18,14 @@ const AdminPage = () => {
         setMenuItem(fbItems);
     }
 
-    let [staffs, setStaff] = useState([]);
     let addNewStaff = (newStaff) => {
-        setStaff((prevStaff) => {
+        setStaffs((prevStaff) => {
             return [newStaff, ...prevStaff];
         });
     }
+    const setStaffFromFB = (fbStaffs) => {
+    setStaffs(fbStaffs);
+  };
     return (
 
         <RestuarantContext.Provider value={{
@@ -30,7 +33,9 @@ const AdminPage = () => {
             addNewItemMenu: addNewItemMenu,
             setMenuItemsFromFB: setMenuItemsFromFB,
             staffs: staffs,
-            addNewStaff: addNewStaff
+            addNewStaff: addNewStaff,
+            setStaffFromFB:setStaffFromFB
+            
         }}>
             <div id="admin-page" className="page">
                 <NavBar />

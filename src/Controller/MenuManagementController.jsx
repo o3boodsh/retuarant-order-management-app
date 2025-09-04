@@ -129,6 +129,45 @@ class MenuManagementController {
             "https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/d1a7/live/173b2380-47d2-11ee-9b58-cb80889117a8.jpg.webp"
         );
     }
+        // delete item :
+        deleteItemFromFirebase = async (id) => {
+        try {
+            await fetch(`${this.FIREBASE_DB_URL}/menuItems/${id}.json`, {
+                method: "DELETE",
+            });
+            this.showAlert("Deleted!", "Item deleted successfully", "success");
+
+            // بعد الحذف، حدّث البيانات
+            this.fetchItemsMenuFromFirebase();
+        } catch (error) {
+            console.error("Error deleting item:", error);
+            this.showAlert("Error!", "Failed to delete item", "error");
+        }
+    }
+    
+    // update item
+        updateItemInFirebase = async (id, updatedData) => {
+        try {
+            await fetch(`${this.FIREBASE_DB_URL}/menuItems/${id}.json`, {
+                method: "PATCH",
+                body: JSON.stringify(updatedData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            this.showAlert("Updated!", "Item updated successfully", "success");
+
+            // بعد التعديل، رجّع القائمة من Firebase
+            this.fetchItemsMenuFromFirebase();
+        } catch (error) {
+            console.error("Error updating item:", error);
+            this.showAlert("Error!", "Failed to update item", "error");
+        }
+    }
+
+     
+
+
 }
 
 export default MenuManagementController;

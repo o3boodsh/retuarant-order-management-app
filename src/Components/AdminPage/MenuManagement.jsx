@@ -1,18 +1,23 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import '../../Resources/css/style.css';
-import TextAreaForm from "./adminComponents/TextAreaForm";
-import InputForm from "./adminComponents/InputForm";
 import MenuManagementController from "../../Controller/MenuManagementController";
 import Item from "./adminComponents/Item";
+import TextAreaForm from "./adminComponents/TextAreaForm";
+
+import InputForm from "./adminComponents/InputForm";
+
 import RestuarantContext from "../../Context/restuarant-context";
+import EditItemModal from "./adminComponents/EditItem";
+
 
 const MenuManagement = () => {
     let menuManagementController = new MenuManagementController();
     let restuarantContext = useContext(RestuarantContext);
 
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
-    // دالة لاسترجاع البيانات من Firebase
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -26,13 +31,32 @@ const MenuManagement = () => {
 
     useEffect(() => { fetchData(); }, []);
 
+    const handleDelete = (id) => {
+        menuManagementController.deleteItemFromFirebase(id);
+    };
+
+    const handleEdit = (id) => {
+        const item = restuarantContext.menuItem.find(i => i.id === id);
+        setSelectedItem(item);
+        setShowModal(true);
+    };
+
+    const handleChange = (e) => {
+        setSelectedItem({ ...selectedItem, [e.target.name]: e.target.value });
+    };
+
+    const handleSave = () => {
+        menuManagementController.updateItemInFirebase(selectedItem.id, selectedItem);
+        setShowModal(false);
+    };
+
     return (
-        <Fragment >
+        <Fragment>
+
             <h3 className="mb-4"><i className="fas fa-utensils me-2"></i>Menu Management</h3>
             <div className="card mb-4 shadow-sm">
                 <div className="card-body">
                     <h5 className="card-title">Add New Menu Item</h5>
-
                     <form onSubmit={menuManagementController.onSubmitHandler} id="menuForm" className="row g-3">
                         <InputForm type="text" placeholder="Item Name" name="Item Name" ref={menuManagementController.nameRef} id="itemName" />
                         <InputForm type="number" placeholder="Price" name="Price ($)" ref={menuManagementController.priceRef} id="itemPrice" />
@@ -68,35 +92,11 @@ const MenuManagement = () => {
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
+                    <div style={{ borderTop: "2px solid #dee2e6", margin: "2rem 0" }}></div>
 
-            <div className="card shadow-sm">
-                <div className="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">Menu Items</h5>
-                    <button
-                        className="btn btn-sm btn-outline-light"
-                        onClick={fetchData}
-                        disabled={loading}
-                    >
-                        <i className={`fas ${loading ? 'fa-spinner fa-spin' : 'fa-sync-alt'} me-1`}></i>
-                        Refresh
-                    </button>
-                </div>
-                <div className="card-body">
                     {loading ? (
-                        <div className="text-center py-4">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                            <p className="mt-2">Loading menu items...</p>
-                        </div>
-                    ) : restuarantContext.menuItem.length === 0 ? (
-                        <div className="text-center py-4">
-                            <i className="fas fa-utensils fa-3x text-muted mb-3"></i>
-                            <p className="text-muted">No menu items found. Add your first item!</p>
-                        </div>
-                    ) :
+                        <p>Loading...</p>
+                    ) : (
                         <div className="row" id="menuItems">
                             {restuarantContext.menuItem.map((element) =>
                                 <Item
@@ -107,15 +107,61 @@ const MenuManagement = () => {
                                     price={element.price}
                                     category={element.category}
                                     description={element.description}
-                                    status={element.status}
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
                                 />
                             )}
                         </div>
-                    }
+                    )}
                 </div>
             </div>
+
+            {/* Bootstrap Modal
+            {showModal && selectedItem && (
+                <div className="modal show d-block" tabIndex="-1">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Edit Item</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                            </div>
+                            <div className="modal-body">
+                                <input type="text" className="form-control mb-2"
+                                    name="name"
+                                    value={selectedItem.name}
+                                    onChange={handleChange} />
+                                <input type="number" className="form-control mb-2"
+                                    name="price"
+                                    value={selectedItem.price}
+                                    onChange={handleChange} />
+                                <textarea className="form-control mb-2"
+                                    name="description"
+                                    value={selectedItem.description}
+                                    onChange={handleChange}></textarea>
+                                <input type="text" className="form-control mb-2"
+                                    name="category"
+                                    value={selectedItem.category}
+                                    onChange={handleChange} />
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                                <button className="btn btn-primary" onClick={handleSave}>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )} */}
+            {/* {  :) showModal  شغل شات تسألنيش ليش} */}
+    {showModal && (
+    <EditItemModal
+        selectedItem={selectedItem}
+        onChange={handleChange}
+        onClose={() => setShowModal(false)}
+        onSave={handleSave}
+    />
+)}
         </Fragment>
     );
-}
+};
 
 export default MenuManagement;

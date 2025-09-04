@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import RestuarantContext from "../../Context/restuarant-context";
 import StaffManagementController from "../../Controller/StaffManagementController";
 import Staff from "./adminComponents/Staff";
@@ -6,6 +6,45 @@ import Staff from "./adminComponents/Staff";
 const StaffManagementPage = () => {
     let staffManagementController = new StaffManagementController();
     let restuarantContext = useContext(RestuarantContext);
+
+    const [loading, setLoading] = useState(true);
+
+    // const [loading, setLoading] = useState(true);
+    // const [showModal, setShowModal] = useState(false);
+    // const [selectedItem, setSelectedItem] = useState(null);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            await staffManagementController.fetchStaffFromFirebase();
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchData(); }, []);
+
+    // const handleDelete = (id) => {
+    //     menuManagementController.deleteItemFromFirebase(id);
+    // };
+
+    // const handleEdit = (id) => {
+    //     const item = restuarantContext.menuItem.find(i => i.id === id);
+    //     setSelectedItem(item);
+    //     setShowModal(true);
+    // };
+
+    // const handleChange = (e) => {
+    //     setSelectedItem({ ...selectedItem, [e.target.name]: e.target.value });
+    // };
+
+    // const handleSave = () => {
+    //     menuManagementController.updateItemInFirebase(selectedItem.id, selectedItem);
+    //     setShowModal(false);
+    // };
+
     return (
         <Fragment>
             <h3 className="mb-4"><i className="fas fa-users me-2"></i>Staff Management</h3>
@@ -54,18 +93,41 @@ const StaffManagementPage = () => {
                 </form>
                 <hr />
                 <h5 className="card-header bg-transparent mb-3">Staff List</h5>
-                <ul id="staffList" className="list-group"></ul>
+
+                <table className="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Password</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {restuarantContext.staffs.map((staff) => (
+                            <tr key={staff.id}>
+                                <td>{staff.id}</td>
+                                <td>{staff.name}</td>
+                                <td>{staff.password}</td>
+                                <td>{staff.category}</td>
+                                        <td>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => staffManagementController.deleteStaffFromFirebase(staff.id)}
+          >
+            <i className="fas fa-trash-alt"></i> Delete
+          </button>
+        </td>
+                            </tr>
+
+                        ))}
+                    </tbody>
+                </table>
+
             </div>
 
-            {restuarantContext.staffs.map((element) =>
-                <Staff
-                    key={element.id}
-                    id={element.id}
-                    name={element.name}
-                    password={element.password}
-                    category={element.category}
-                />
-            )}
+
+
         </Fragment>
     );
 }
