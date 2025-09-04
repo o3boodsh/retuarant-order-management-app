@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const CustomerLogin = () => {
@@ -8,7 +8,6 @@ const CustomerLogin = () => {
         navigate('/customer', { replace: true });
     }
 
-    const [show, setShow] = useState(false);
     return (
         <Fragment>
             {/* Login */}
@@ -65,7 +64,7 @@ const CustomerLogin = () => {
                                 </div>
                             </div>
 
-                            <button onClick={() => setShow(true)} type="button" className="btn-login_1" data-bs-toggle="modal" data-bs-target="#registerModal">
+                            <button type="button" className="btn-login_1" data-bs-toggle="modal" data-bs-target="#registerModal">
                                 <i className="fas fa-user-plus me-2"></i>Create New Account
                             </button>
                         </form>
@@ -138,7 +137,7 @@ const CustomerLogin = () => {
             </div>
 
             {/* Forgot Password Modal */}
-            <div show={show} className="modal fade" id="forgotPasswordModal" tabIndex="-1" aria-labelledby="forgotPasswordModalLabel"
+            <div className="modal fade" id="forgotPasswordModal" tabIndex="-1" aria-labelledby="forgotPasswordModalLabel"
                 aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -159,7 +158,7 @@ const CustomerLogin = () => {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button onClick={() => setShow(false)} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="button" className="btn btn-primary">Send Reset Link</button>
                         </div>
                     </div>

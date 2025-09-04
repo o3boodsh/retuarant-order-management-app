@@ -13,6 +13,10 @@ const AdminPage = () => {
         });
     }
 
+    let setMenuItemsFromFB = (fbItems) => {
+        setMenuItem(fbItems);
+    }
+
     let [staffs, setStaff] = useState([]);
     let addNewStaff = (newStaff) => {
         setStaff((prevStaff) => {
@@ -24,6 +28,7 @@ const AdminPage = () => {
         <RestuarantContext.Provider value={{
             menuItem: menuItem,
             addNewItemMenu: addNewItemMenu,
+            setMenuItemsFromFB: setMenuItemsFromFB,
             staffs: staffs,
             addNewStaff: addNewStaff
         }}>
