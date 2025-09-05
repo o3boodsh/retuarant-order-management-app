@@ -66,10 +66,10 @@ const MenuManagement = () => {
                             <div className="form-floating">
                                 <select className="form-select" id="itemCategory" ref={menuManagementController.categoryRef}>
                                     <option value="">Select Category</option>
-                                    <option value="appetizer">Appetizers</option>
-                                    <option value="main">Main Courses</option>
-                                    <option value="dessert">Desserts</option>
-                                    <option value="beverage">Beverages</option>
+                                    <option value="appetizers">Appetizers</option>
+                                    <option value="mains">Main Courses</option>
+                                    <option value="desserts">Desserts</option>
+                                    <option value="drinks">Beverages</option>
                                 </select>
                                 <label htmlFor="itemCategory">Category</label>
                             </div>
@@ -152,14 +152,14 @@ const MenuManagement = () => {
                 </div>
             )} */}
             {/* {  :) showModal  شغل شات تسألنيش ليش} */}
-    {showModal && (
-    <EditItemModal
-        selectedItem={selectedItem}
-        onChange={handleChange}
-        onClose={() => setShowModal(false)}
-        onSave={handleSave}
-    />
-)}
+            {showModal && (
+                <EditItemModal
+                    selectedItem={selectedItem}
+                    onChange={handleChange}
+                    onClose={() => setShowModal(false)}
+                    onSave={handleSave}
+                />
+            )}
         </Fragment>
     );
 };

@@ -11,6 +11,7 @@ import StaffManagementPage from "../Components/AdminPage/StaffManagementPage";
 import CustomerLogin from "../Pages/CustomerLogin";
 import CheffPage from "../Pages/CheffPage";
 import WaiterPage from "../Pages/WaiterPage";
+import Checkout from "../Components/CustomerPage/Checkout";
 
 
 const AppRoutes = () => {
@@ -24,6 +25,7 @@ const AppRoutes = () => {
             <Route path="/waiter" element={<WaiterPage />} />
             <Route path="/staff-login" element={<StaffLoginPage />} />
             <Route path="/customer-login" element={<CustomerLogin />} />
+            <Route path="/checkout" element={<Checkout />} />
 
             <Route path="/admin" element={<AdminPage />}>
                 <Route path="/admin/dashboard" element={<DashBoard />} />
