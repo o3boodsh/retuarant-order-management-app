@@ -1,9 +1,8 @@
 import React from "react";
-import Order from "../Model/Order";
 
 const OrderContext = React.createContext({
-    order: new Order(),
-    setOrder: () => {}
+    order: {},
+    setOrder: () => { }
 });
 
 export default OrderContext;

@@ -1,142 +1,165 @@
-import { useState, useCallback } from 'react';
+class Order {
+    constructor(tableNumber = 0, customerName = '') {
+        this.id = this.generateOrderId();
+        this.tableNumber = tableNumber;
+        this.customerName = customerName;
+        this.status = 'pending'; // pending, preparing, ready, completed, cancelled
+        this.items = [];
+        this.subtotal = 0;
+        this.tax = 0;
+        this.finalTotal = 0;
+        this.createdAt = new Date().toISOString();
+        this.updatedAt = new Date().toISOString();
+        this.notes = '';
+    }
 
-const Order = (initialTableNumber = 0, initialCustomerName = '') => {
-    const [order, setOrder] = useState({
-        id: generateOrderId(),
-        tableNumber: initialTableNumber,
-        customerName: initialCustomerName,
-        status: 'pending',
-        items: [],
-        subtotal: 0,
-        tax: 0,
-        finalTotal: 0,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        notes: ''
-    });
-
-    const generateOrderId = () => {
+    generateOrderId = () => {
         const timestamp = Date.now().toString(36);
         const randomStr = Math.random().toString(36).substr(2, 5);
         return `order_${timestamp}_${randomStr}`;
     };
+}
 
-    const addItem = useCallback((item, quantity = 1, specialInstructions = '') => {
-        setOrder(prevOrder => {
-            const existingItemIndex = prevOrder.items.findIndex(i =>
-                i.id === item.id && i.specialInstructions === specialInstructions
-            );
 
-            let newItems;
-            if (existingItemIndex >= 0) {
-                newItems = [...prevOrder.items];
-                newItems[existingItemIndex].quantity += quantity;
-            } else {
-                newItems = [...prevOrder.items, {
-                    ...item,
-                    quantity,
-                    specialInstructions: specialInstructions || ''
-                }];
-            }
+// import { useState, useCallback } from 'react';
 
-            const subtotal = calculateSubtotal(newItems);
-            const tax = calculateTax(subtotal);
-            const finalTotal = subtotal + tax;
+// const Order = (initialTableNumber = 0, initialCustomerName = '') => {
+//     const [order, setOrder] = useState({
+//         id: generateOrderId(),
+//         tableNumber: initialTableNumber,
+//         customerName: initialCustomerName,
+//         status: 'pending',
+//         items: [],
+//         subtotal: 0,
+//         tax: 0,
+//         finalTotal: 0,
+//         createdAt: new Date().toISOString(),
+//         updatedAt: new Date().toISOString(),
+//         notes: ''
+//     });
 
-            return {
-                ...prevOrder,
-                items: newItems,
-                subtotal,
-                tax,
-                finalTotal,
-                updatedAt: new Date().toISOString()
-            };
-        });
-    }, []);
+//     const generateOrderId = () => {
+//         const timestamp = Date.now().toString(36);
+//         const randomStr = Math.random().toString(36).substr(2, 5);
+//         return `order_${timestamp}_${randomStr}`;
+//     };
 
-    const removeItem = useCallback((itemId, specialInstructions = '') => {
-        setOrder(prevOrder => {
-            const newItems = prevOrder.items.filter(item =>
-                !(item.id === itemId && item.specialInstructions === specialInstructions)
-            );
+//     const addItem = useCallback((item, quantity = 1, specialInstructions = '') => {
+//         setOrder(prevOrder => {
+//             const existingItemIndex = prevOrder.items.findIndex(i =>
+//                 i.id === item.id && i.specialInstructions === specialInstructions
+//             );
 
-            const subtotal = calculateSubtotal(newItems);
-            const tax = calculateTax(subtotal);
-            const finalTotal = subtotal + tax;
+//             let newItems;
+//             if (existingItemIndex >= 0) {
+//                 newItems = [...prevOrder.items];
+//                 newItems[existingItemIndex].quantity += quantity;
+//             } else {
+//                 newItems = [...prevOrder.items, {
+//                     ...item,
+//                     quantity,
+//                     specialInstructions: specialInstructions || ''
+//                 }];
+//             }
 
-            return {
-                ...prevOrder,
-                items: newItems,
-                subtotal,
-                tax,
-                finalTotal,
-                updatedAt: new Date().toISOString()
-            };
-        });
-    }, []);
+//             const subtotal = calculateSubtotal(newItems);
+//             const tax = calculateTax(subtotal);
+//             const finalTotal = subtotal + tax;
 
-    const calculateSubtotal = (items) => {
-        return items.reduce((total, item) => total + (item.price * item.quantity), 0);
-    };
+//             return {
+//                 ...prevOrder,
+//                 items: newItems,
+//                 subtotal,
+//                 tax,
+//                 finalTotal,
+//                 updatedAt: new Date().toISOString()
+//             };
+//         });
+//     }, []);
 
-    const calculateTax = (subtotal) => {
-        return subtotal * 0.1;
-    };
+//     const removeItem = useCallback((itemId, specialInstructions = '') => {
+//         setOrder(prevOrder => {
+//             const newItems = prevOrder.items.filter(item =>
+//                 !(item.id === itemId && item.specialInstructions === specialInstructions)
+//             );
 
-    const setStatus = useCallback((newStatus) => {
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            status: newStatus,
-            updatedAt: new Date().toISOString()
-        }));
-    }, []);
+//             const subtotal = calculateSubtotal(newItems);
+//             const tax = calculateTax(subtotal);
+//             const finalTotal = subtotal + tax;
 
-    const setTableNumber = useCallback((tableNumber) => {
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            tableNumber,
-            updatedAt: new Date().toISOString()
-        }));
-    }, []);
+//             return {
+//                 ...prevOrder,
+//                 items: newItems,
+//                 subtotal,
+//                 tax,
+//                 finalTotal,
+//                 updatedAt: new Date().toISOString()
+//             };
+//         });
+//     }, []);
 
-    const setCustomerName = useCallback((customerName) => {
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            customerName,
-            updatedAt: new Date().toISOString()
-        }));
-    }, []);
+//     const calculateSubtotal = (items) => {
+//         return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+//     };
 
-    const setNotes = useCallback((notes) => {
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            notes,
-            updatedAt: new Date().toISOString()
-        }));
-    }, []);
+//     const calculateTax = (subtotal) => {
+//         return subtotal * 0.1;
+//     };
 
-    const getItemsCount = useCallback(() => {
-        return order.items.reduce((total, item) => total + item.quantity, 0);
-    }, [order.items]);
+//     const setStatus = useCallback((newStatus) => {
+//         setOrder(prevOrder => ({
+//             ...prevOrder,
+//             status: newStatus,
+//             updatedAt: new Date().toISOString()
+//         }));
+//     }, []);
 
-    const isEmpty = useCallback(() => {
-        return order.items.length === 0;
-    }, [order.items]);
+//     const setTableNumber = useCallback((tableNumber) => {
+//         setOrder(prevOrder => ({
+//             ...prevOrder,
+//             tableNumber,
+//             updatedAt: new Date().toISOString()
+//         }));
+//     }, []);
 
-    return {
-        order,
-        addItem,
-        removeItem,
-        setStatus,
-        setTableNumber,
-        setCustomerName,
-        setNotes,
-        getItemsCount,
-        isEmpty
-    };
-};
+//     const setCustomerName = useCallback((customerName) => {
+//         setOrder(prevOrder => ({
+//             ...prevOrder,
+//             customerName,
+//             updatedAt: new Date().toISOString()
+//         }));
+//     }, []);
 
-export default Order;
+//     const setNotes = useCallback((notes) => {
+//         setOrder(prevOrder => ({
+//             ...prevOrder,
+//             notes,
+//             updatedAt: new Date().toISOString()
+//         }));
+//     }, []);
+
+//     const getItemsCount = useCallback(() => {
+//         return order.items.reduce((total, item) => total + item.quantity, 0);
+//     }, [order.items]);
+
+//     const isEmpty = useCallback(() => {
+//         return order.items.length === 0;
+//     }, [order.items]);
+
+//     return {
+//         order,
+//         addItem,
+//         removeItem,
+//         setStatus,
+//         setTableNumber,
+//         setCustomerName,
+//         setNotes,
+//         getItemsCount,
+//         isEmpty
+//     };
+// };
+
+// export default Order;
 
 
 

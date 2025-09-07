@@ -8,6 +8,8 @@ const RestuarantContext = React.createContext({
     staffs: [],
     addNewStaff: (newStaff) => { },
     setStaffFromFB: (fbStaffs) => { },
+    orderItems: [],
+    addItem: (newItem) => { }
 });
 
 export default RestuarantContext;

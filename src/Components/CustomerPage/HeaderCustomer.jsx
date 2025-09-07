@@ -1,12 +1,15 @@
 import { Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import OrderContext from "../../Context/order-context";
+import RestuarantContext from "../../Context/restuarant-context";
 
 const HeaderCustomer = () => {
     let navigate = useNavigate();
-    let orderContext = useContext(OrderContext);
+    const restuarantContext = useContext(RestuarantContext);
 
-    const itemsCount = orderContext.order ? orderContext.order.getItemsCount() : 0;
+    // حساب العدد الإجمالي للقطع (ليس عدد العناصر)
+    const totalItemsCount = restuarantContext.orderItems.reduce((total, item) => {
+        return total + item.quantity;
+    }, 0);
 
     let openContactHandler = () => { }
     let openAboutHandler = () => { }
@@ -19,6 +22,7 @@ const HeaderCustomer = () => {
     let openCheckoutHandler = () => {
         navigate('/checkout');
     }
+    
     return (
         <Fragment>
             <div className="header-customer">
@@ -46,7 +50,9 @@ const HeaderCustomer = () => {
                     </div>
                     <div className="header-btn" id="cart-btn" onClick={openCheckoutHandler}>
                         <i className="fas fa-shopping-cart"></i>
-                        <div className="cart-count" id="cart-count">{itemsCount}</div>
+                        <div className="cart-count" id="cart-count">
+                            {totalItemsCount} {/* هنا التغيير */}
+                        </div>
                         <span className="btn-tooltip">View Cart</span>
                     </div>
                 </div>

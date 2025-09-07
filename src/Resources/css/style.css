@@ -2488,3 +2488,20 @@ footer {
 .cart-info i {
     font-size: 18px;
 }
+
+.special-instructions-input {
+    margin: 10px 0;
+}
+
+.instructions-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.instructions-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}

@@ -1,14 +1,13 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import CustomerPageController from "../../Controller/CustomerPageController";
 import MenuItemCustomer from "./MenuItemCustomer";
-import OrderContext from "../../Context/order-context";
-import Order from "../../Model/Order";
+import RestuarantContext from "../../Context/restuarant-context";
 
 const ContentCustomer = () => {
     const { items, loading, error, fetchItemsMenu } = CustomerPageController();
     const [filteredItems, setFilteredItems] = useState([]);
     const [activeCategory, setActiveCategory] = useState("all");
-    const oreder = new Order();
+    const restuarantContext = useContext(RestuarantContext);
 
     useEffect(() => {
         filterItemsByCategory(activeCategory);
@@ -35,41 +34,6 @@ const ContentCustomer = () => {
         setActiveCategory(category);
     };
 
-    // const addToCartHandler = (element) => {
-    //     return () => {
-    //         // إذا لم يكن هناك طلب، إنشاء طلب جديد
-    //         if (!orderContext.order) {
-    //             orderContext.setOrder(new Order());
-    //         }
-
-    //         // إنشاء نسخة جديدة من الطلب الحالي
-    //         const currentOrder = orderContext.order || new Order();
-    //         const newOrder = new Order(currentOrder.tableNumber, currentOrder.customerName);
-
-    //         // نسخ جميع الخصائص من الطلب القديم
-    //         Object.assign(newOrder, currentOrder);
-
-    //         // إضافة العنصر الجديد
-    //         newOrder.addItem(new ItemMenu(
-    //             element.id,
-    //             element.name,
-    //             element.price,
-    //             element.description,
-    //             element.category,
-    //             element.status,
-    //             element.image
-    //         ));
-
-    //         // تحديث حالة الطلب في Context
-    //         orderContext.setOrder(newOrder);
-    //         console.log("Order updated:", newOrder);
-    //         alert(`Added ${element.name} to cart! Total items: ${newOrder.getItemsCount()}`);
-    //     };
-    // };
-
-    const addToCartHandler = () => {
-
-     }
 
     if (loading) {
         return (
@@ -157,7 +121,10 @@ const ContentCustomer = () => {
                                     description={element.description}
                                     price={element.price}
                                     category={element.category}
-                                    addToCartHandler={addToCartHandler(element)}
+                                    addToCartHandler={() => {
+                                        restuarantContext.addItem(element);
+                                        console.log(restuarantContext.orderItems);
+                                    }}
                                 />
                             ))}
                         </div>
@@ -169,3 +136,37 @@ const ContentCustomer = () => {
 }
 
 export default ContentCustomer;
+
+
+
+// const addToCartHandler = (element) => {
+//     return () => {
+//         // إذا لم يكن هناك طلب، إنشاء طلب جديد
+//         if (!orderContext.order) {
+//             orderContext.setOrder(new Order());
+//         }
+
+//         // إنشاء نسخة جديدة من الطلب الحالي
+//         const currentOrder = orderContext.order || new Order();
+//         const newOrder = new Order(currentOrder.tableNumber, currentOrder.customerName);
+
+//         // نسخ جميع الخصائص من الطلب القديم
+//         Object.assign(newOrder, currentOrder);
+
+//         // إضافة العنصر الجديد
+//         newOrder.addItem(new ItemMenu(
+//             element.id,
+//             element.name,
+//             element.price,
+//             element.description,
+//             element.category,
+//             element.status,
+//             element.image
+//         ));
+
+//         // تحديث حالة الطلب في Context
+//         orderContext.setOrder(newOrder);
+//         console.log("Order updated:", newOrder);
+//         alert(`Added ${element.name} to cart! Total items: ${newOrder.getItemsCount()}`);
+//     };
+// };
