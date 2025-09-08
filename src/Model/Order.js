@@ -8,9 +8,6 @@ class Order {
         this.subtotal = 0;
         this.tax = 0;
         this.finalTotal = 0;
-        this.createdAt = new Date().toISOString();
-        this.updatedAt = new Date().toISOString();
-        this.notes = '';
     }
 
     generateOrderId = () => {
@@ -18,8 +15,28 @@ class Order {
         const randomStr = Math.random().toString(36).substr(2, 5);
         return `order_${timestamp}_${randomStr}`;
     };
-}
 
+    setTableNumber(tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+    setItems(items) {
+        this.items = items;
+    }
+    setName(customerName) {
+        this.customerName = customerName;
+    } 
+    setSubtotal(subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    setTax(tax) {
+        this.tax = tax;
+    }
+    setFinalTotal(finalTotal) {
+        this.finalTotal = finalTotal;
+    }
+}
+export default Order;
 
 // import { useState, useCallback } from 'react';
 

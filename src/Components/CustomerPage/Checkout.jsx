@@ -1,19 +1,89 @@
 import { useNavigate } from "react-router-dom";
 import RestuarantContext from "../../Context/restuarant-context";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import Order from "../../Model/Order";
+import Swal from "sweetalert2";
 
 // في Checkout.js
 const Checkout = () => {
+    let tableNumberRef = useRef();
+    let cardRef = useRef();
+    let expiryDateRef = useRef();
+    let cvvRef = useRef();
+    let cardholderRef = useRef();
     const navigate = useNavigate();
-    const [tableNumber, setTableNumber] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
     const restuarantContext = useContext(RestuarantContext);
+    let FIREBASE_DB_URL = "https://restuarant-order-management-default-rtdb.firebaseio.com";
+    let order = new Order();
+
+    let onSubmitHandler = async (event) => {
+        event.preventDefault();
+        order.setItems(restuarantContext.orderItems);
+        order.setTableNumber(tableNumberRef.current.value);
+        order.setName(cardholderRef.current.value);
+        order.setSubtotal(subtotal);
+        order.setTax(tax);
+        order.setFinalTotal(finalTotal);
+        restuarantContext.putOrder(order);
+        console.log();
+        Swal.fire({
+            title: 'successfully',
+            text: 'The request has been submitted successfully.',
+            icon: 'success',
+            showCancelButton: true,
+            showConfirmButton: true,
+            timer: 5000,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                order = restuarantContext.order;
+                saveItemsOnFirebase(order);
+            }
+        }).catch((error) => {
+            alert('error:' + error);
+        });
+    }
+
+    // let saveItemsOnFirebase = async (newOrder) => {
+    //     fetch(`${FIREBASE_DB_URL}/orders.json`,
+    //         {
+    //             method: "POST",
+    //             body: JSON.stringify(newOrder),
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //         }
+    //     ).then((response) => {
+    //         return response.json();
+    //     }).then((result) => {
+    //         return result;
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     });
+    // }
+
+    const saveItemsOnFirebase = async (newOrder) => {
+        try {
+            const response = await fetch(`${FIREBASE_DB_URL}/orders.json`, {
+                method: "POST",
+                body: JSON.stringify(newOrder),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error("Failed to save order:", error);
+            throw error;
+        }
+    };
+
 
     const onClickBackHandler = () => {
         navigate('/customer');
     }
-
-    const processPayment = () => { }
 
     // في Checkout.js
     const handleQuantityChange = (itemId, change) => {
@@ -39,28 +109,6 @@ const Checkout = () => {
 
     const tax = subtotal * 0.10;
     const finalTotal = subtotal + tax;
-
-    // // وظيفة زيادة ونقصان الكمية
-    // const handleQuantityChange = (itemId, change) => {
-    //     const updatedItems = restuarantContext.orderItems.map(item => {
-    //         if (item.id === itemId) {
-    //             const newQuantity = item.quantity + change;
-    //             if (newQuantity <= 0) {
-    //                 return null; // احذف العنصر إذا كانت الكمية 0
-    //             }
-    //             return { ...item, quantity: newQuantity };
-    //         }
-    //         return item;
-    //     }).filter(item => item !== null);
-
-    //     // هنا تحتاج لتحديث الـ context (سنضيفها لاحقاً)
-    // };
-
-    // // وظيفة حذف العنصر
-    // const handleRemoveItem = (itemId) => {
-    //     const updatedItems = restuarantContext.orderItems.filter(item => item.id !== itemId);
-    //     // هنا تحتاج لتحديث الـ context
-    // };
 
     return (
         <div className="checkout-container">
@@ -124,34 +172,35 @@ const Checkout = () => {
                                         type="number"
                                         className="form-input"
                                         placeholder="Enter your table number"
-                                        value={tableNumber}
-                                        onChange={(e) => setTableNumber(e.target.value)}
+                                        ref={tableNumberRef}
+                                        min={0}
+                                        max={100}
                                         required
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">Card Number</label>
-                                    <input type="text" className="form-input" placeholder="1234 5678 9012 3456" />
+                                    <input type="number" className="form-input" placeholder="1-100" ref={cardRef} />
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group">
                                         <label className="form-label">Expiry Date</label>
-                                        <input type="text" className="form-input" placeholder="MM/YY" />
+                                        <input type="text" className="form-input" placeholder="MM/YY" ref={expiryDateRef} />
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">CVV</label>
-                                        <input type="text" className="form-input" placeholder="123" />
+                                        <input type="text" className="form-input" placeholder="123" ref={cvvRef} />
                                     </div>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">Cardholder Name</label>
-                                    <input type="text" className="form-input" placeholder="John Doe" />
+                                    <input type="text" className="form-input" placeholder="John Doe" ref={cardholderRef} />
                                 </div>
                                 <button
                                     type="button"
                                     className="pay-btn"
-                                    onClick={processPayment}
                                     disabled={isProcessing}
+                                    onClick={onSubmitHandler}
                                 >
                                     {isProcessing ? (
                                         <>

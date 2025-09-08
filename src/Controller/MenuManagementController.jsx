@@ -129,8 +129,8 @@ class MenuManagementController {
             "https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/d1a7/live/173b2380-47d2-11ee-9b58-cb80889117a8.jpg.webp"
         );
     }
-        // delete item :
-        deleteItemFromFirebase = async (id) => {
+    // delete item :
+    deleteItemFromFirebase = async (id) => {
         try {
             await fetch(`${this.FIREBASE_DB_URL}/menuItems/${id}.json`, {
                 method: "DELETE",
@@ -144,9 +144,9 @@ class MenuManagementController {
             this.showAlert("Error!", "Failed to delete item", "error");
         }
     }
-    
+
     // update item
-        updateItemInFirebase = async (id, updatedData) => {
+    updateItemInFirebase = async (id, updatedData) => {
         try {
             await fetch(`${this.FIREBASE_DB_URL}/menuItems/${id}.json`, {
                 method: "PATCH",
@@ -165,7 +165,7 @@ class MenuManagementController {
         }
     }
 
-     
+
 
 
 }

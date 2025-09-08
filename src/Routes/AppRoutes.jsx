@@ -55,12 +55,18 @@ const AppRoutes = () => {
             prevItems.filter(item => item.id !== itemId)
         );
     };
+    let [order, setOrder] = useState({});
+    let putOrder = (newOrder) => {
+        setOrder(newOrder);
+    }
     return (
         <RestuarantContext.Provider value={{
             orderItems: orederItems,
             addItem: addItem,
-            updateItemQuantity: updateItemQuantity, // أضف هذا
-            removeItem: removeItem // أضف هذا
+            updateItemQuantity: updateItemQuantity,
+            removeItem: removeItem,
+            order: order,
+            putOrder: putOrder
         }}>
             <Routes>
                 <Route path="/" element={<Navigate to="/role-selecttion" />} />

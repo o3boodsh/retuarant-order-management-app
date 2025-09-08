@@ -9,7 +9,9 @@ const RestuarantContext = React.createContext({
     addNewStaff: (newStaff) => { },
     setStaffFromFB: (fbStaffs) => { },
     orderItems: [],
-    addItem: (newItem) => { }
+    addItem: (newItem) => { },
+    order: {},
+    putOrder: (newOrder) => { }
 });
 
 export default RestuarantContext;
