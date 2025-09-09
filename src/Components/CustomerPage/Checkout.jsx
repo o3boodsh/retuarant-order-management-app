@@ -17,32 +17,45 @@ const Checkout = () => {
     let FIREBASE_DB_URL = "https://restuarant-order-management-default-rtdb.firebaseio.com";
     let order = new Order();
 
-    let onSubmitHandler = async (event) => {
-        event.preventDefault();
-        order.setItems(restuarantContext.orderItems);
-        order.setTableNumber(tableNumberRef.current.value);
-        order.setName(cardholderRef.current.value);
-        order.setSubtotal(subtotal);
-        order.setTax(tax);
-        order.setFinalTotal(finalTotal);
-        restuarantContext.putOrder(order);
-        console.log();
-        Swal.fire({
-            title: 'successfully',
+ let onSubmitHandler = async (event) => {
+    event.preventDefault();
+    setIsProcessing(true); // تعطيل الزر أثناء المعالجة
+
+    // إعداد بيانات الطلب
+    order.setItems(restuarantContext.orderItems);
+    order.setTableNumber(tableNumberRef.current.value);
+    order.setName(cardholderRef.current.value);
+    order.setSubtotal(subtotal);
+    order.setTax(tax);
+    order.setFinalTotal(finalTotal);
+    restuarantContext.putOrder(order);
+
+    try {
+        // حفظ الطلب على Firebase مباشرة
+        await saveItemsOnFirebase(order);
+
+        // عرض رسالة نجاح بدون انتظار تأكيد المستخدم
+        await Swal.fire({
+            title: 'Success',
             text: 'The request has been submitted successfully.',
             icon: 'success',
-            showCancelButton: true,
-            showConfirmButton: true,
-            timer: 5000,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                order = restuarantContext.order;
-                saveItemsOnFirebase(order);
-            }
-        }).catch((error) => {
-            alert('error:' + error);
+            timer: 3000,
+            showConfirmButton: false,
         });
+
+        // بعد النجاح، يمكنك إعادة التوجيه أو تنظيف الحالة
+        navigate('/customer');
+    } catch (error) {
+        // في حالة الخطأ، عرض رسالة خطأ
+        Swal.fire({
+            title: 'Error',
+            text: 'Failed to submit the request. Please try again.',
+            icon: 'error',
+        });
+    } finally {
+        setIsProcessing(false); // إعادة تفعيل الزر
     }
+}
 
     // let saveItemsOnFirebase = async (newOrder) => {
     //     fetch(`${FIREBASE_DB_URL}/orders.json`,

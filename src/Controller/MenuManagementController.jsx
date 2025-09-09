@@ -70,7 +70,7 @@ class MenuManagementController {
                 item.id = key;
                 fbItems.unshift(item);
             }
-            console.log(fbItems);
+            // console.log(fbItems);
             this.itemContext.setMenuItemsFromFB(fbItems);
         }).catch((error) => {
             console.log(error)
