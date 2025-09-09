@@ -16,7 +16,7 @@ export const useStaffManagement = () => {
         })
         .then((response) => response.json())
         .then((result) => {
-            // إضافة المفتاح الذي أنشأه Firebase إلى البيانات
+            // Add the Firebase-generated key to the data
             const staffWithKey = {
                 ...newStaff,
                 firebaseKey: result.name
@@ -38,9 +38,9 @@ export const useStaffManagement = () => {
             .then((result) => {
                 let fbStaffs = [];
                 for (let key in result) {
-                    if (result[key]) { // التأكد من وجود البيانات
+                    if (result[key]) { // Ensure data exists
                         let staff = {
-                            staffId: result[key].staffId || "", // استخدام القيمة الافتراضية إذا كانت غير موجودة
+                            staffId: result[key].staffId || "", // Use default value if not exists
                             name: result[key].name || "",
                             password: result[key].password || "",
                             category: result[key].category || "",
@@ -58,7 +58,24 @@ export const useStaffManagement = () => {
             });
     };
 
-    const deleteStaffFromFirebase = async (id) => {
+    const deleteStaffFromFirebase = async (id, staffName) => {
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: `You won't be able to recover staff member "${staffName}"!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        });
+        
+        // If user didn't confirm, exit the function
+        if (!result.isConfirmed) {
+            return false;
+        }
+        
         try {
             const response = await fetch(`${FIREBASE_DB_URL}/staffs/${id}.json`, {
                 method: "DELETE",
@@ -86,7 +103,7 @@ export const useStaffManagement = () => {
             headers: { "Content-Type": "application/json" },
         })
         .then(() => {
-            // تحديث القائمة محليًا
+            // Update the list locally
             const updatedStaffs = staffContext.staffs.map(staff =>
                 staff.firebaseKey === editingStaff.firebaseKey
                     ? { ...updatedStaff, firebaseKey: editingStaff.firebaseKey }

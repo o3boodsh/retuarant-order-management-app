@@ -99,12 +99,12 @@ const StaffManagementPage = () => {
     };
 
     const handleDelete = async (staff) => {
-        if (window.confirm(`Are you sure you want to delete ${staff.name}?`)) {
+        
             const success = await deleteStaffFromFirebase(staff.firebaseKey);
             if (success) {
                 // إعادة تحميل البيانات من Firebase
                 await fetchStaffFromFirebase();
-            }
+            
         }
     };
 

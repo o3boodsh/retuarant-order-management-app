@@ -14,6 +14,8 @@ import WaiterPage from "../Pages/WaiterPage";
 import Checkout from "../Components/CustomerPage/Checkout";
 import RestuarantContext from "../Context/restuarant-context";
 import { useState } from "react";
+import OrderTracking from "../Components/CustomerPage/OrderTracking";
+
 
 
 const AppRoutes = () => {
@@ -69,6 +71,7 @@ const AppRoutes = () => {
             putOrder: putOrder
         }}>
             <Routes>
+                
                 <Route path="/" element={<Navigate to="/role-selecttion" />} />
                 <Route path="/role-selecttion" element={<RoleSelectionPage />} />
                 <Route path="/customer" element={<CustomerPage />} />
@@ -78,6 +81,9 @@ const AppRoutes = () => {
                 <Route path="/staff-login" element={<StaffLoginPage />} />
                 <Route path="/customer-login" element={<CustomerLogin />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-tracking" element={<OrderTracking />} />
+                
+
 
                 <Route path="/admin" element={<AdminPage />}>
                     <Route path="/admin/dashboard" element={<DashBoard />} />
