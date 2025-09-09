@@ -14,7 +14,7 @@ const Checkout = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const restaurantContext = useContext(RestuarantContext);
     let FIREBASE_DB_URL = "https://restuarant-order-management-default-rtdb.firebaseio.com";
-     
+
     // Function to clear form fields
     const clearFormFields = () => {
         if (tableNumberRef.current) tableNumberRef.current.value = '';
@@ -26,14 +26,14 @@ const Checkout = () => {
 
     let onSubmitHandler = async (event) => {
         event.preventDefault();
-        
+
         // Check if form references are available
-        if (!tableNumberRef.current || !cardRef.current || !expiryDateRef.current || 
+        if (!tableNumberRef.current || !cardRef.current || !expiryDateRef.current ||
             !cvvRef.current || !cardholderRef.current) {
             console.error("Form references are not available");
             return;
         }
-        
+
         // Check if there are items in the order
         if (!restaurantContext.orderItems || restaurantContext.orderItems.length === 0) {
             await Swal.fire({
@@ -43,12 +43,12 @@ const Checkout = () => {
             });
             return;
         }
-        
+
         // Validate input data
-        if (!tableNumberRef.current.value || 
-            !cardRef.current.value || 
-            !expiryDateRef.current.value || 
-            !cvvRef.current.value || 
+        if (!tableNumberRef.current.value ||
+            !cardRef.current.value ||
+            !expiryDateRef.current.value ||
+            !cvvRef.current.value ||
             !cardholderRef.current.value) {
             await Swal.fire({
                 title: 'Incomplete Information',
@@ -126,7 +126,7 @@ const Checkout = () => {
 
                 const tax = subtotal * 0.10;
                 const finalTotal = subtotal + tax;
-                
+
                 // Create order object directly instead of using Order class
                 const order = {
                     items: [...restaurantContext.orderItems],
@@ -138,7 +138,7 @@ const Checkout = () => {
                     status: "received",
                     timestamp: new Date().toISOString()
                 };
-                
+
                 // Save order to Firebase
                 const result = await saveItemsOnFirebase(order);
                 const orderId = result.name; // Firebase returns the ID in the "name" field
@@ -154,14 +154,12 @@ const Checkout = () => {
 
                 // Clear form fields
                 clearFormFields();
-                
+
                 // Clear order items from context
-                if (restaurantContext.setOrderItems) {
-                    restaurantContext.setOrderItems([]);
-                } else if (restaurantContext.clearOrderItems) {
-                    restaurantContext.clearOrderItems();
+                if (restaurantContext.removeItem) {
+                    restaurantContext.orderItems.forEach(item => restaurantContext.removeItem(item.id));
                 }
-                
+
                 // Navigate to order tracking with the order ID
                 navigate('/order-tracking', { state: { orderId } });
             } catch (error) {
@@ -205,31 +203,24 @@ const Checkout = () => {
         if (item) {
             const newQuantity = item.quantity + change;
             if (newQuantity > 0) {
-                // Update quantity in context
-                const updatedItems = restaurantContext.orderItems.map(item => 
-                    item.id === itemId ? {...item, quantity: newQuantity} : item
-                );
-                if (restaurantContext.setOrderItems) {
-                    restaurantContext.setOrderItems(updatedItems);
+                if (restaurantContext.updateItemQuantity) {
+                    restaurantContext.updateItemQuantity(itemId, newQuantity);
                 }
             } else {
-                // Remove item from context
-                const filteredItems = restaurantContext.orderItems.filter(item => item.id !== itemId);
-                if (restaurantContext.setOrderItems) {
-                    restaurantContext.setOrderItems(filteredItems);
+                if (restaurantContext.removeItem) {
+                    restaurantContext.removeItem(itemId);
                 }
             }
         }
     };
 
     const handleRemoveItem = (itemId) => {
-        const filteredItems = restaurantContext.orderItems.filter(item => item.id !== itemId);
-        if (restaurantContext.setOrderItems) {
-            restaurantContext.setOrderItems(filteredItems);
+        if (restaurantContext.removeItem) {
+            restaurantContext.removeItem(itemId);
         }
     };
 
-    // Calculate totals
+
     const subtotal = restaurantContext.orderItems?.reduce((total, item) => {
         return total + (item.price * item.quantity);
     }, 0) || 0;
@@ -331,50 +322,50 @@ const Checkout = () => {
                             </div>
                             <div className="form-group">
                                 <label className="form-label">Card Number</label>
-                                <input 
-                                    type="text" 
-                                    className="form-input" 
-                                    placeholder="1234 5678 9012 3456" 
-                                    ref={cardRef} 
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="1234 5678 9012 3456"
+                                    ref={cardRef}
                                     maxLength={19}
                                     onInput={formatCardNumber}
-                                    required 
+                                    required
                                 />
                             </div>
                             <div className="form-row">
                                 <div className="form-group">
                                     <label className="form-label">Expiry Date</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-input" 
-                                        placeholder="MM/YY" 
-                                        ref={expiryDateRef} 
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder="MM/YY"
+                                        ref={expiryDateRef}
                                         maxLength={5}
                                         onInput={formatExpiryDate}
-                                        required 
+                                        required
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">CVV</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-input" 
-                                        placeholder="123" 
-                                        ref={cvvRef} 
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder="123"
+                                        ref={cvvRef}
                                         maxLength={4}
                                         pattern="[0-9]{3,4}"
-                                        required 
+                                        required
                                     />
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="form-label">Cardholder Name</label>
-                                <input 
-                                    type="text" 
-                                    className="form-input" 
-                                    placeholder="John Doe" 
-                                    ref={cardholderRef} 
-                                    required 
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="John Doe"
+                                    ref={cardholderRef}
+                                    required
                                 />
                             </div>
                             <button
