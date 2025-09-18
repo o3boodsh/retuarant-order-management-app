@@ -1,5 +1,5 @@
 class Order {
-    constructor(tableNumber = 0, customerName = '') {
+    constructor(tableNumber = 0, customerName = '', status = 'pending', items = [], subtotal = 0, tax = 0, finalTotal = 0) {
         this.id = this.generateOrderId();
         this.tableNumber = tableNumber;
         this.customerName = customerName;
@@ -24,7 +24,7 @@ class Order {
     }
     setName(customerName) {
         this.customerName = customerName;
-    } 
+    }
     setSubtotal(subtotal) {
         this.subtotal = subtotal;
     }

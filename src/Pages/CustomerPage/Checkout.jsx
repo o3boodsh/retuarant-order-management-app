@@ -134,7 +134,7 @@ const Checkout = () => {
                     subtotal: subtotal,
                     tax: tax,
                     finalTotal: finalTotal,
-                    status: "received",
+                    status: "pending",
                     timestamp: new Date().toISOString()
                 };
 
