@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import CustomerPageController from "../../Controller/CustomerPageController";
-import MenuItemCustomer from "./MenuItemCustomer";
 import RestuarantContext from "../../Context/restuarant-context";
+import MenuItemCustomer from "./MenuItemCustomer";
 
 const ContentCustomer = () => {
     const { items, loading, error, fetchItemsMenu } = CustomerPageController();

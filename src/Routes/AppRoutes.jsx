@@ -1,20 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import RoleSelectionPage from "../Pages/RoleSelectionPage";
-import CustomerPage from "../Pages/CustomerPage";
-import AdminPage from "../Pages/AdminPage";
-import StaffLoginPage from "../Pages/StaffLoginPage";
-import DashBoard from "../Components/AdminPage/DashBoard";
-import MenuManagement from "../Components/AdminPage/MenuManagement";
-import Orders from "../Components/AdminPage/Orders";
-import ReportsPage from "../Components/AdminPage/ReportsPage";
-import StaffManagementPage from "../Components/AdminPage/StaffManagementPage";
-import CustomerLogin from "../Pages/CustomerLogin";
-import CheffPage from "../Pages/CheffPage";
-import WaiterPage from "../Pages/WaiterPage";
-import Checkout from "../Components/CustomerPage/Checkout";
-import RestuarantContext from "../Context/restuarant-context";
 import { useState } from "react";
-import OrderTracking from "../Components/CustomerPage/OrderTracking";
+import RestuarantContext from "../Context/restuarant-context";
+import CustomerPage from "../Pages/CustomerPage/CustomerPage";
+import CheffPage from "../Pages/StaffPage/CheffPage";
+import WaiterPage from "../Pages/StaffPage/WaiterPage";
+import StaffLoginPage from "../Pages/LoginPage/StaffLoginPage";
+import CustomerLogin from "../Pages/LoginPage/CustomerLogin";
+import Checkout from "../Pages/CustomerPage/Checkout";
+import OrderTracking from "../Pages/CustomerPage/OrderTracking";
+import AdminPage from "../Pages/AdminPage/AdminPage";
+import DashBoard from "../Pages/AdminPage/DashBoard";
+import MenuManagement from "../Pages/AdminPage/MenuManagement";
+import ReportsPage from "../Pages/AdminPage/ReportsPage";
+import Orders from "../Pages/AdminPage/Orders";
+import StaffManagementPage from "../Pages/AdminPage/StaffManagementPage";
+import RoleSelectionPage from "../Pages/RoleSelectionPage";
 
 
 
@@ -71,7 +71,7 @@ const AppRoutes = () => {
             putOrder: putOrder
         }}>
             <Routes>
-                
+
                 <Route path="/" element={<Navigate to="/role-selecttion" />} />
                 <Route path="/role-selecttion" element={<RoleSelectionPage />} />
                 <Route path="/customer" element={<CustomerPage />} />
@@ -82,7 +82,7 @@ const AppRoutes = () => {
                 <Route path="/customer-login" element={<CustomerLogin />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order-tracking" element={<OrderTracking />} />
-                
+
 
 
                 <Route path="/admin" element={<AdminPage />}>

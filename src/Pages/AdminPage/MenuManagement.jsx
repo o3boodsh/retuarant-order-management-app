@@ -1,13 +1,13 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import '../../Resources/css/style.css';
 import MenuManagementController from "../../Controller/MenuManagementController";
-import Item from "./adminComponents/Item";
-import TextAreaForm from "./adminComponents/TextAreaForm";
-
-import InputForm from "./adminComponents/InputForm";
-
+// import EditItemModal from "./adminComponents/EditItem";
+import '../../Resources/css/style.css';
 import RestuarantContext from "../../Context/restuarant-context";
-import EditItemModal from "./adminComponents/EditItem";
+import Item from "../../Components/AdminPageComponents/adminComponents/Item";
+import TextAreaForm from "../../Components/AdminPageComponents/adminComponents/TextAreaForm";
+import InputForm from "../../Components/AdminPageComponents/adminComponents/InputForm";
+import EditItemModal from "../../Components/AdminPageComponents/adminComponents/EditItem";
+
 
 
 const MenuManagement = () => {

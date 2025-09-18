@@ -1,13 +1,14 @@
 import { Outlet } from "react-router-dom";
-import Header from "../Components/AdminPage/Header";
-import NavBar from "../Components/AdminPage/NavBar";
-import '../Resources/css/style.css';
-import RestuarantContext from "../Context/restuarant-context";
+import RestuarantContext from "../../Context/restuarant-context";
 import { useState } from "react";
+import Header from "../../Components/AdminPageComponents/Header";
+import NavBar from "../../Components/AdminPageComponents/NavBar";
+import '../../Resources/css/style.css';
+
 
 const AdminPage = () => {
     let [menuItem, setMenuItem] = useState([]);
-  const [staffs, setStaffs] = useState([]);
+    const [staffs, setStaffs] = useState([]);
     let addNewItemMenu = (newItem) => {
         setMenuItem((prevItems) => {
             return [newItem, ...prevItems];
@@ -24,8 +25,8 @@ const AdminPage = () => {
         });
     }
     const setStaffFromFB = (fbStaffs) => {
-    setStaffs(fbStaffs);
-  };
+        setStaffs(fbStaffs);
+    };
     return (
 
         <RestuarantContext.Provider value={{
@@ -34,8 +35,8 @@ const AdminPage = () => {
             setMenuItemsFromFB: setMenuItemsFromFB,
             staffs: staffs,
             addNewStaff: addNewStaff,
-            setStaffFromFB:setStaffFromFB
-            
+            setStaffFromFB: setStaffFromFB
+
         }}>
             <div id="admin-page" className="page">
                 <NavBar />

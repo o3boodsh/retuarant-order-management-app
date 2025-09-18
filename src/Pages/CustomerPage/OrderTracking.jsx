@@ -13,7 +13,7 @@ const OrderTracking = () => {
     const [progress, setProgress] = useState(25);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
+
     const FIREBASE_DB_URL = "https://restuarant-order-management-default-rtdb.firebaseio.com";
     const orderId = location.state?.orderId;
 
@@ -30,25 +30,25 @@ const OrderTracking = () => {
         try {
             setLoading(true);
             const response = await fetch(`${FIREBASE_DB_URL}/orders/${orderId}.json`);
-            
+
             if (!response.ok) {
                 throw new Error(`Failed to fetch order details: ${response.status}`);
             }
-            
+
             const orderData = await response.json();
-            
+
             if (!orderData) {
                 throw new Error("Order not found");
             }
-            
+
             setCurrentOrder({ id: orderId, ...orderData });
             setOrderStatus(orderData.status || "received");
-            
+
             // Update estimated time based on order status
             if (orderData.estimatedTime) {
                 setEstimatedTime(orderData.estimatedTime);
             }
-            
+
             // Set progress based on status
             switch (orderData.status) {
                 case "received":
@@ -69,7 +69,7 @@ const OrderTracking = () => {
                 default:
                     setProgress(25);
             }
-            
+
             setLoading(false);
         } catch (err) {
             console.error("Error fetching order details:", err);
@@ -132,16 +132,16 @@ const OrderTracking = () => {
         navigate('/customer');
     };
 
-if (loading) {
-    return (
-        <div className="order-tracking-container">
-            <div className="loading-spinner">
-                <div className="loader"></div>
+    if (loading) {
+        return (
+            <div className="order-tracking-container">
+                <div className="loading-spinner">
+                    <div className="loader"></div>
+                </div>
+                <p>Loading your order details...</p>
             </div>
-            <p>Loading your order details...</p>
-        </div>
-    );
-}
+        );
+    }
 
     if (error) {
         return (
@@ -186,7 +186,7 @@ if (loading) {
                 <div className="order-info-card">
                     <div className="order-number">
                         <h3>Order #: {currentOrder.id}</h3>
-                        
+
                         <p>Table {currentOrder.tableNumber}</p>
                     </div>
 
@@ -196,15 +196,15 @@ if (loading) {
                         </div>
                         <div className="status-details">
                             {/* <h3>{statusDetails.title}</h3> */}
-                            
+
                             {/* <p>{statusDetails.description}</p> */}
                         </div>
                     </div>
 
                     <div className="progress-container">
                         <div className="progress-bar">
-                            <div 
-                                className="progress-fill" 
+                            <div
+                                className="progress-fill"
                                 style={{ width: `${progress}%` }}
                             ></div>
                         </div>

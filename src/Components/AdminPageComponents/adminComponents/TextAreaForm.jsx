@@ -5,7 +5,7 @@ const TextAreaForm = React.forwardRef((props, ref) => {
         <div className="col-md-12">
             <div className="form-floating">
                 <textarea className="form-control" id="itemDescription" placeholder={props.placeholder}
-                     ref={ref}/>
+                    ref={ref} />
                 <label htmlFor="itemDescription">{props.name}</label>
             </div>
         </div>

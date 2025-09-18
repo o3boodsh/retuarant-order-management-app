@@ -1,6 +1,6 @@
-import HeaderCustomer from "../Components/CustomerPage/HeaderCustomer";
-import ContentCustomer from "../Components/CustomerPage/ContentCustomer";
 import { Fragment } from "react";
+import HeaderCustomer from "../../Components/CustomerPageComponents/HeaderCustomer";
+import ContentCustomer from "../../Components/CustomerPageComponents/ContentCustomer";
 
 const CustomerPage = () => {
     return (

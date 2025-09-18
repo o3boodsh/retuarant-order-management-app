@@ -22,7 +22,7 @@ const HeaderCustomer = () => {
     let openCheckoutHandler = () => {
         navigate('/checkout');
     }
-    
+
     return (
         <Fragment>
             <div className="header-customer">

@@ -24,7 +24,7 @@ const MenuItemCustomer = (props) => {
                 <div className="item-details">
                     <h3 className="item-name">{props.name}</h3>
                     <p className="item-description">{props.description}</p>
-                    
+
                     {/* حقل التعليمات الخاصة */}
                     <div className="special-instructions-input">
                         <input

@@ -46,7 +46,8 @@
     gap: 20px;
 }
 
-.order-info-card, .order-details-card {
+.order-info-card,
+.order-details-card {
     background-color: white;
     border-radius: 10px;
     padding: 25px;
@@ -238,6 +239,3 @@
 .back-button:hover {
     background-color: #2980b9;
 }
-
-
-
